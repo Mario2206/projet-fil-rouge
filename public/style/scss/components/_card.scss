@@ -1,0 +1,27 @@
+.card {
+    border: 2px solid $black;
+    &--header {
+        background-color: $blue;
+        
+        padding: $marge3;
+    }
+
+    &--title {
+        color: $white;
+        text-align: center;
+        font-size: $title;
+
+        &--dark {
+            @extend .card--title;
+            color: $black;
+        }
+
+    }
+
+
+
+    &--content {
+        padding: $marge3;
+        text-align: center;
+    }
+}

@@ -1,0 +1,16 @@
+.top-bar {
+
+    display: flex;
+    background-color: $lightBlue;
+    justify-content: space-between;
+    padding: $fixMarge2 $fixMarge3;
+
+    &--logo {
+        font-size: $subtitle;
+        color: $white;
+    }
+
+    &--nav {
+        position: absolute;
+    }
+}
