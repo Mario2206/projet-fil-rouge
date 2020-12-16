@@ -5,7 +5,7 @@ use Core\View\Template\Template;
 ob_start();
 ?>
 <section class="flex justify--center flex-fulfill py-3">
-        <form class="form col6 flex--column align--center">
+        <form class="form col6 flex--column align--center" action="<?= MAIN_PATH . LOGIN ?>" method="POST">
             <h1 class="form--title self--start">
                 Connexion
             </h1>

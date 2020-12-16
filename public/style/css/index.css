@@ -69,6 +69,36 @@
 .pb-5 {
   padding-bottom: 10%; }
 
+.px-1 {
+  padding: 0 2%; }
+
+.px-2 {
+  padding: 0 4%; }
+
+.px-3 {
+  padding: 0 6%; }
+
+.px-4 {
+  padding: 0 8%; }
+
+.px-5 {
+  padding: 0 10%; }
+
+.p-1 {
+  padding: 2%; }
+
+.p-2 {
+  padding: 4%; }
+
+.p-3 {
+  padding: 6%; }
+
+.p-4 {
+  padding: 8%; }
+
+.p-5 {
+  padding: 10%; }
+
 @media screen and (max-width: 960px) {
   .my-1-tablet {
     margin: 2% 0; }
@@ -99,7 +129,27 @@
   .pb-4-tablet {
     padding-bottom: 8%; }
   .pb-5-tablet {
-    padding-bottom: 10%; } }
+    padding-bottom: 10%; }
+  .px-1-tablet {
+    padding: 0 2%; }
+  .px-2-tablet {
+    padding: 0 4%; }
+  .px-3-tablet {
+    padding: 0 6%; }
+  .px-4-tablet {
+    padding: 0 8%; }
+  .px-5-tablet {
+    padding: 0 10%; }
+  .p-1-tablet {
+    padding: 2%; }
+  .p-2-tablet {
+    padding: 4%; }
+  .p-3-tablet {
+    padding: 6%; }
+  .p-4-tablet {
+    padding: 8%; }
+  .p-5-tablet {
+    padding: 10%; } }
 
 @media screen and (max-width: 450px) {
   .my-1-phone {
@@ -131,7 +181,27 @@
   .pb-4-phone {
     padding-bottom: 8%; }
   .pb-5-phone {
-    padding-bottom: 10%; } }
+    padding-bottom: 10%; }
+  .px-1-phone {
+    padding: 0 2%; }
+  .px-2-phone {
+    padding: 0 4%; }
+  .px-3-phone {
+    padding: 0 6%; }
+  .px-4-phone {
+    padding: 0 8%; }
+  .px-5-phone {
+    padding: 0 10%; }
+  .p-1-phone {
+    padding: 2%; }
+  .p-2-phone {
+    padding: 4%; }
+  .p-3-phone {
+    padding: 6%; }
+  .p-4-phone {
+    padding: 8%; }
+  .p-5-phone {
+    padding: 10%; } }
 
 * {
   padding: 0;
@@ -394,6 +464,15 @@ a {
 .f-white {
   color: white; }
 
+.f-green {
+  color: green; }
+
+.f-red {
+  color: red; }
+
+.f-orange {
+  color: orange; }
+
 .txt-center {
   text-align: center; }
 
@@ -420,8 +499,17 @@ a {
   .top-bar--logo {
     font-size: 1.2em;
     color: white; }
+  .top-bar--delimiter {
+    width: 2px;
+    height: 100%;
+    background-color: white;
+    display: block;
+    margin: 0 5px; }
   .top-bar--nav {
-    position: absolute; }
+    display: flex;
+    align-items: center; }
+    .top-bar--nav--items {
+      color: white; }
 
 .bg--blue {
   background-color: #678cf1; }
