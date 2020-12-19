@@ -16,6 +16,8 @@ class Controller {
     protected function render (string $pageName, array $vars = []) {
         extract($vars);
         $error = Session::getError();
+        $success = Session::get("success");
+        // Session::clean("success");
         require(__DIR__ . "/../../App/View/$pageName.php");
     }
     
@@ -36,7 +38,8 @@ class Controller {
      * 
      * @param string $path
      */
-    protected function redirect (string $path) {
+    protected function redirect (string $path, string $successMessage = "") {
+        Session::set("success", $successMessage);
         header("Location:" . MAIN_PATH . $path);
         die();
     }
@@ -51,6 +54,7 @@ class Controller {
         Session::setError($error);
         $this->redirect($path);
     }
+    
 
     /**
      * For protecting page for specific role
@@ -58,11 +62,15 @@ class Controller {
      * @param string $role 
      * @param string $redirectionRoute
      * 
+     * @return any
      */
     protected function protectPageFor (string $role, string $redirectionRoute) {
-        if(!Session::get($role)) {
+        $entity = Session::get($role);
+        if(!$entity) {
             $this->redirect($redirectionRoute);
         }
+
+        return $entity;
     }
 
 }

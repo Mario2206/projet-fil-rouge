@@ -108,7 +108,13 @@ class Router implements IERouter {
         $currentRoute = $this->parseRoutes($this->store[$httpMethod]);
 
         if (!$currentRoute) {
-            header("HTTP/1.0 404 Not Found");
+
+            http_response_code(HTTP_NOT_FOUND);
+
+            $errorRoute = $this->parseRoutes($this->store[self::HTTP_GET], "404");
+
+            $errorRoute ? $errorRoute->activate() : header("HTTP/1.1 404 Not Found");
+            
             die();
         }
 
@@ -116,13 +122,18 @@ class Router implements IERouter {
 
     }
 
-    /*
+    /** 
      * FOR PARSING ROUTES COLLECTION
-     * **/
-    private function parseRoutes($routeCollection)   {
+     * 
+     * @param array $routeCollection
+     * @param string $path
+     * 
+     * @return Route
+     */
+    private function parseRoutes(array $routeCollection, string $path = null)   {
 
-        $route = array_filter($routeCollection, function ($item) {
-            return $item->find ($this->_url);
+        $route = array_filter($routeCollection, function ($item) use ($path) {
+            return $item->find ($path ?? $this->_url);
         });
 
         return array_shift($route);

@@ -1,10 +1,10 @@
 <?php
 
-use App\Controller\CreatePollController;
-use App\Exceptions\CreatePollException;
+
 use Core\Router\Router;
 
 require(ROOT ."/App/Constant/routes.php");
+
 
 try {
     
@@ -18,43 +18,20 @@ try {
 
    
 
-    //POLL ROUTE (SUBMITTER)
+    //BET ROUTES
 
-    $router->get(POLL_LIST_FRIENDS, "PollListController", "pollListFromFriends");
+    $router->get(BET_LIST, "BetCategoryController", "showCategories");
 
-    $router->get(POLL_RESPONSE_START . "/:poll_id", "PollResponseController", "startPage");
+    $router->get(BET_LIST . "/:category", "BetListController", "globalBetListFromCategory");
 
-    $router->get(POLL_RESPONSE . "/:poll_id", "PollResponseController", "pageForAnswers");
+    $router->get(BET_LIST_PRIVATE, "BetCategoryController", "showPrivateCategories");
 
-    $router->get(POLL_RESPONSE . "/:poll_id/:question_number", "PollResponseController", "getQuestion");
+    $router->get(BET_LIST_PRIVATE . "/:category", "BetListController", "ownBetListFromCategory");
 
-    $router->post(POLL_RESPONSE .  "/:poll_id/:question_number", "PollResponseController", "recieveAnswer");
+    $router->get(BET_REPORT . "/:betId", "BetReportController", "getBetReport");
 
-    // POLL ROUTES (OWNER)
+    $router->get(BET_CREATION, "CreateBetController", "createBetPage");
 
-    $router->get(POLL_LIST, "PollListController", "pollList");
-
-    $router->get(POLL_CREATION, "CreatePollController", "createPollPage");
-
-    $router->post(POLL_CREATION, "CreatePollController", "createPoll");
-
-    $router->get(POLL_CREATED, "CreatePollController", "confirmCreatePollPage");
-
-    $router->get(POLL_REPORT . "/:poll_id", "PollManagerController", "getPollReport");
-
-    $router->get(POLL_REPORT_DETAILS . "/:poll_id", "PollManagerController", "getResultsOfPoll");
-
-    $router->get(POLL_CLOSE . "/:poll_id", "PollManagerController", "closePoll");
-
-    $router->post(POLL_OPEN . "/:poll_id", "PollManagerController", "openPoll");
-
-    //POLL CHAT
-
-    $router->get(POLL_CHAT . "/:poll_id", "ChatController", "chatPage");
-
-    $router->get(POLL_CHAT_MESSAGE . "/:poll_id", "ChatController", "getMessages");
-
-    $router->post(POLL_CHAT_MESSAGE . "/:poll_id", "ChatController", "postMessage");
 
     //USER ROUTES
 
@@ -80,6 +57,8 @@ try {
     $router->get(FRIENDS_ACCEPT . "/:friendId", "FriendsController", "acceptFriend");
 
     $router->get(FRIENDS_REJECT . "/:friendId", "FriendsController", "rejectFriend");
+
+    $router->get("/404", "NotFoundController", "displayError");
 
     $router->parse();
    

@@ -1,0 +1,22 @@
+.alert {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: $fixMarge1 $fixMarge2;
+    margin: $fixMarge1 0;
+    border-radius: $maxRounded;
+
+    &--error {
+        @extend .alert;
+        background-color: $danger;
+        border: 2px solid $red;
+    }
+
+    &--success {
+        @extend .alert;
+        background-color: $success;
+        border: 2px solid $green;
+    }
+
+}

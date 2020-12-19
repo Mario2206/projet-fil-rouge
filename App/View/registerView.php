@@ -1,11 +1,10 @@
 <?php
 
 use Core\View\Template\Template;
-
 ob_start();
 ?>
 <section class="flex justify--center flex-fulfill py-3">
-        <form class="form col6 flex--column align--center">
+        <form class="form col6 flex--column align--center" method="POST" action="<?= MAIN_PATH . REGISTER ?>">
             <h1 class="form--title self--start">
                 Inscription
             </h1>
@@ -25,13 +24,13 @@ ob_start();
                 <label for="username">
                     <img src="<?= MAIN_PATH ?>/img/user.svg" title="Nom d'utilisateur" />
                 </label>
-                <input type="text" placeholder="Nom d'utilisateur" id="username" required class="form--input" name="firstname"/>
+                <input type="text" placeholder="Nom d'utilisateur" id="username" required class="form--input" name="username"/>
             </div>
             <div class="form--input-wrapper">
                 <label for="mail">
                     <img src="<?= MAIN_PATH ?>/img/mail.svg" title="Nom d'utilisateur" />
                 </label>
-                <input type="text" placeholder="E-mail" id="mail" required class="form--input" name="mail"/>
+                <input type="text" placeholder="E-mail" id="mail" required class="form--input" name="email"/>
             </div>
             <div class="form--input-wrapper">
                 <label for="password">
@@ -55,4 +54,5 @@ ob_start();
 <?php 
 $content = ob_get_clean();
 $temp = new Template("S'inscrire", [], ["index"]);
+$temp->setContextVars(compact("error"));
 $temp->render($content);

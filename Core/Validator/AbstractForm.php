@@ -6,11 +6,14 @@ abstract class AbstractForm {
 
     protected $formValues = [];
 
+    protected $formKeys = [];
+
     protected $errors = [];
 
-    public function __construct(array $formValues)
+    public function __construct(array $post)
     {
-        $this->formValues = $formValues;
+        $this->formValues = $post;
+        $this->formKeys = array_keys($post);
     }
 
     /*
@@ -19,11 +22,11 @@ abstract class AbstractForm {
      *
      * return boolean
      * */
-    protected function checkPostKeys(array $post, array $requiredKeys) : void {
-        $postKeys = array_keys($post);
+    protected function checkPostKeys(array $postKeys, array $requiredKeys) : void {
         $diff = array_diff($requiredKeys, $postKeys);
         if(count($diff) !== 0) {
-            throw new \Exception("Post keys are missing", 400);
+            
+            throw new \Exception("Post keys are missing : the body request should contain the following keys :" . implode(", " , $requiredKeys) . " but it  contains : " . implode(", ", $postKeys) , HTTP_BAD_REQ);
         }
     }
 

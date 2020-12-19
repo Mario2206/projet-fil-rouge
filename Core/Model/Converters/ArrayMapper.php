@@ -29,4 +29,12 @@ class ArrayMapper {
         return $data;
     }
 
+    public static function mergeSubObjectItemByProperty(array $data, string $property) {
+        $formatedData = [];
+        foreach($data as $item) {
+            $formatedData[$item->{$property}] = $item;
+        }
+        return $formatedData;
+    }
+
 }

@@ -7,6 +7,6 @@ use Core\Validator\AbstractForm;
 class ConnectUserForm extends AbstractForm {
 
     public function validate() {
-        $this->checkPostKeys($_POST, ["username", "password"]);
+        $this->checkPostKeys($this->formKeys, ["username", "password"]);
     }
 }

@@ -3,22 +3,23 @@
 namespace App\Controller;
 
 use App\Form\OpenPollForm;
+use App\Model\BetModel;
 use App\Model\PollModel;
 use Core\Controller\Controller;
 use Core\Model\Converters\TypeConverter;
 use Core\Tools\Session;
 use DateTime;
 
-class PollManagerController extends Controller {
+class BetManagerController extends Controller {
 
-    private $pollModel;
+    private $betModel;
     private $user;
 
     public function __construct()
     {
         $this->user = Session::get("user");
         $this->protectPageFor("user", "/login");
-        $this->pollModel = new PollModel();
+        $this->betModel = new BetModel();
         
     }
 
@@ -32,7 +33,7 @@ class PollManagerController extends Controller {
 
         $this->protectAgainstCheat($idPoll);
 
-        $poll = $this->pollModel->find(["idPoll"=>$idPoll]);
+        $poll = $this->betModel->find(["idPoll"=>$idPoll]);
         $currentDate = TypeConverter::stringifyDate(new DateTime());
         
         $this->render("poll-report", ["poll" => $poll[0], "currentDate" => $currentDate]);
@@ -42,7 +43,7 @@ class PollManagerController extends Controller {
     public function getResultsOfPoll(string $idPoll) {
         $this->protectAgainstCheat($idPoll);
 
-        $dataPoll = $this->pollModel->getPollAndRef($idPoll);
+        $dataPoll = $this->betModel->getPollAndRef($idPoll);
         $poll = $dataPoll["poll"]; 
         $questions = $dataPoll["questions"];
         $currentDate = TypeConverter::stringifyDate(new DateTime());

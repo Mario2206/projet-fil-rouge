@@ -6,11 +6,11 @@ use Core\Model\Converters\ArrayMapper;
 use Core\Model\Model;
 use DateTime;
 
-class PollModel extends Model {
+class BetModel extends Model {
         
-        const TABLE_NAME = "poll";
+        const TABLE_NAME = "bets";
 
-        const KEYS = ["pollName", "description", "createdAt", "idUser", "availableAt", "unAvailableAt"];
+        const KEYS = ["betName", "description", "createdAt", "idUser", "availableAt", "unAvailableAt"];
 
         public function __construct()
         {
@@ -20,12 +20,12 @@ class PollModel extends Model {
         /**
          * For inserting many rows to Database
          * 
-         * @param array $pollDataGroup
+         * @param array $betDataGroup
          * 
          * @return int (last inserted id)
          */
         public function insert(
-                string $pollName, 
+                string $betName, 
                 string $description, 
                 string $createdAt, 
                 string $user_id,
@@ -48,27 +48,28 @@ class PollModel extends Model {
         }
 
         /**
-         * For getting all poll created by user's friends and which are available
+         * For getting all bets created from a category
          * 
-         * @param string $userId
+         * @param string $categoryCode
+         * @param string $userId (optional)
          * 
          * @return array
          */
-        public function findPollFromFriends (string $userId) {
-            
+        public function findBetsFromCategory (string $categoryCode, string $userId = "") {
+            $tableName = self::TABLE_NAME;
             $req = $this->_db->prepare("
-            SELECT poll.idPoll, poll.availableAt, poll.unAvailableAt, poll.createdAt, poll.description, poll.pollName, users.username 
-            FROM poll 
-            INNER JOIN friends ON friends.idFriend = poll.idUser 
-            INNER JOIN users ON friends.idFriend = users.idUser
-            WHERE friends.idUser = ? AND poll.availableAt < NOW() AND poll.unAvailableAt > NOW()
-            ");
+            SELECT $tableName.idBet, $tableName.betName, $tableName.description, $tableName.createdAt, $tableName.availableAt, $tableName.unAvailableAt, users.username
+            FROM $tableName 
+            INNER JOIN bet_categories ON bet_categories.id = $tableName.betCategory
+            INNER JOIN users ON users.idUser = $tableName.idOwner
+            WHERE bet_categories.code= ? AND $tableName.availableAt < NOW() AND $tableName.unAvailableAt > NOW()" . ( $userId ? " AND $tableName.idOwner = ?" : "")
+            );
 
-            $req->execute([$userId]);
+            $params = $userId ? [$categoryCode, $userId] : [ $categoryCode ];
 
-            $polls = $req->fetchAll();
+            $req->execute($params);
 
-            return $polls;
+            return $req->fetchAll();
         }
 
         /**

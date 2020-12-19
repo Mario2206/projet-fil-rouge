@@ -14,23 +14,23 @@ ob_start();
 
         <?php 
 
-            if($polls) :  
-                foreach ($polls as $poll):
+            if($bets) :  
+                foreach ($bets as $bet):
             
         ?>
 
         <article class="card my-1 col3" >
             <header class="card--header">
-                <h2 class="card--title"><?= $poll->pollName ?></h2>
+                <h2 class="card--title"><?= $bet->betName ?></h2>
             </header>
             
             <div class="card-body p-1 flex--column align--center">
                 
-                <span class="">Créé le : <?= $poll->createdAt ?></span>
-                <p class="py-1"><?= $poll->description ?></p>
-                <a href="<?= MAIN_PATH . POLL_REPORT . "/" . $poll->idPoll ?>" class="cta">Go</a>
+                <span class="">Créé le : <?= $bet->createdAt ?></span>
+                <p class="py-1"><?= $bet->description ?></p>
+                <a href="<?= MAIN_PATH . BET_REPORT . "/" . $bet->idBet ?>" class="cta">Go</a>
                 <?php   
-                    disponibilitySate($currentDate,$poll->availableAt, $poll->unAvailableAt);
+                    disponibilitySate($currentDate,$bet->availableAt, $bet->unAvailableAt);
                 ?>
             </div>
         </article>

@@ -6,20 +6,23 @@ const HOME = "/";
 
 const REGISTER = "/register";
 const LOGIN = "/login";
-const ACCOUNT = "/poll/myAccount";
+const ACCOUNT = "/account";
 const LOG_OUT = "/logout";
 
-//POLL CUSTOMER ROUTE 
 
-const POLL_LIST_FRIENDS = "/poll/friends";
-const POLL_RESPONSE = "/poll/response";
-const POLL_RESPONSE_START = "/poll/response/start";
 
-// POLL ROUTES
-const POLL_LIST = "/poll";
-const POLL_CREATION = "/poll/creation";
-const POLL_CREATED = "/poll/created";
-const POLL_REPORT = "/poll/report";
+//BET CUSTOMER ROUTE 
+
+const BET_LIST_FRIENDS = "/bet/friends";
+const BET_RESPONSE = "/bet/response";
+const BET_RESPONSE_START = "/bet/response/start";
+
+// BET ROUTES
+const BET_LIST = "/bet";
+const BET_LIST_PRIVATE = "/own/bet";
+const BET_CREATION = "/create/bet";
+const BET_CREATED = "/bet/created";
+const BET_REPORT = "/bet/report";
 
 // FRIENDS ROUTES
 const FRIENDS = "/friends";
@@ -27,8 +30,8 @@ const FRIENDS_ACCEPT = "/friends/accept";
 const FRIENDS_REJECT = "/friends/reject";
 
 
-const POLL_CLOSE = "/poll/close";
-const POLL_OPEN = "/poll/open";
-const POLL_REPORT_DETAILS = "/poll/report/details";
-const POLL_CHAT = "/poll/chat";
-const POLL_CHAT_MESSAGE = "/poll/chat/message";
+const BET_CLOSE = "/bet/close";
+const BET_OPEN = "/bet/open";
+const BET_REPORT_DETAILS = "/bet/report/details";
+const BET_CHAT = "/bet/chat";
+const BET_CHAT_MESSAGE = "/bet/chat/message";

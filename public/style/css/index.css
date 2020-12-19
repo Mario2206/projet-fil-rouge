@@ -473,7 +473,7 @@ a {
 .f-orange {
   color: orange; }
 
-.txt-center {
+.txt--center {
   text-align: center; }
 
 .form {
@@ -524,6 +524,9 @@ a {
   color: white;
   background-color: #78ABD8;
   cursor: pointer; }
+  .cta:disabled {
+    opacity: .7;
+    cursor: not-allowed; }
 
 .burger-btn {
   width: 30px;
@@ -597,3 +600,18 @@ a {
   .card--content {
     padding: 6%;
     text-align: center; }
+
+.alert, .alert--error, .alert--success {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 100px; }
+  .alert--error {
+    background-color: #FE6060;
+    border: 2px solid red; }
+  .alert--success {
+    background-color: #8CE28E;
+    border: 2px solid green; }

@@ -8,9 +8,9 @@
 function createQuestionComponent (IdQuestion) {
     const question = $(`
         <div>
-            <div class="poll-container-form--input-wrapper py-4 w-100">
-                <label for="poll_question${IdQuestion}">Question ${IdQuestion}</label>
-                <input type="text" name="poll_questions[]" id="poll_question${IdQuestion}" required>
+            <div class="">
+                <label for="bet_question${IdQuestion}">Question ${IdQuestion}</label>
+                <input type="text" name="bet_questions[]" id="bet_question${IdQuestion}" required>
                 <button class="btn btn-info add-response">
                     Ajouter réponse
                 </button>
@@ -31,7 +31,7 @@ function createQuestionComponent (IdQuestion) {
         e.preventDefault()
         const containerResponse = $(e.target).parent().siblings()
         const responseLength = containerResponse.children().length 
-        const currentQuestion = $(e.target).siblings("input[type=text]").attr("id").split('poll_question')[1]
+        const currentQuestion = $(e.target).siblings("input[type=text]").attr("id").split('bet_question')[1]
      
         const response = CreateResponseComponent(responseLength, currentQuestion)
        
@@ -54,7 +54,7 @@ function CreateResponseComponent (IdReponse, currentQuestion) {
      
         const response = $(`<div class="py-2">
             <label for="response${IdReponse}">Réponse ${IdReponse + 1}</label>
-            <input type="text" id="response${IdReponse}" placeholder="Réponse ${IdReponse + 1}" name="poll_responses[${currentQuestion}][]" required>
+            <input type="text" id="response${IdReponse}" placeholder="Réponse ${IdReponse + 1}" name="bet_responses[${currentQuestion}][]" required>
             <button class="btn btn-danger btn-delete-response">X</button>
         </div>`)
 
@@ -81,17 +81,17 @@ $(".add-question").click(e => {
 
 })
 
-$(".poll-form").submit(e => {
+$(".bet-form").submit(e => {
 
     const questionLength = $(".container-responses", $(e.target)).children().length 
 
     if(!questionLength) {
         e.preventDefault()
-        console.log( $(e.target).serializeArray());
     }
 })
 
 $(document.body).bind("DOMSubtreeModified", () => {
-    const disable = $(".container-question-response").children().length > 0
-    $(".poll-validation").prop("disabled", !disable)
+    console.log($(".container-question-response").children().length);
+    const disable = $(".container-question-response").children().length === 0
+    $(".bet-validation").prop("disabled", disable)
 })

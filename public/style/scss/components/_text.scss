@@ -15,6 +15,10 @@
 .f-orange {
     color: orange;
 }
-.txt-center {
-    text-align: center;
+.txt {
+
+    &--center {
+        text-align: center;
+    }
+    
 }

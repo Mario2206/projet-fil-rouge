@@ -12,6 +12,16 @@
 
     <?php
         require(ROOT . "/App/View/inc/header.php");
+        require(ROOT . "/App/View/inc/alertError.php");
+        require(ROOT . "/App/View/inc/alertSuccess.php");
+        
+        if(isset($error) && $error) {
+            alertError($error);
+        }
+
+        if(isset($success) && $success) {
+            alertSuccess($success);
+        }
     ?>
 
     <main>
@@ -19,7 +29,7 @@
     </main>
     
     <script>const MAIN_PATH = "<?= MAIN_PATH ?>"</script>
-    
+    <script src="https://code.jquery.com/jquery-git.min.js"></script>
     <?= array_reduce($templateScripts, function ($acc , $script) {
         return $acc .= '<script src="'. MAIN_PATH . '/js/' . $script . '.js"></script>';
     }) 

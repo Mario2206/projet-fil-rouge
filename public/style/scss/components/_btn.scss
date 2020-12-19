@@ -8,6 +8,11 @@
     color: $white;
     background-color: $lightBlue;
     cursor: pointer;
+
+    &:disabled {
+        opacity: .7;
+        cursor: not-allowed;
+    }
 }
 .burger-btn {
     width: 30px ;

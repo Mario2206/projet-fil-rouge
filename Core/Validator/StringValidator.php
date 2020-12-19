@@ -21,22 +21,22 @@ class StringValidator {
     public function isEmail()
     {
         if(!filter_var($this->value, FILTER_VALIDATE_EMAIL)){
-            $this->error[] = "La valeur n'est pas un email";
+            $this->error[] = "L'email n'est pas correctement formaté";
         }
         return $this;
     }
 
-    public function checkLength(int $min, int $max){
+    public function checkLength(int $min, int $max, string $keyname){
         $length = strlen($this->value); 
         if($length < $min || $length > $max){
-            $this->error[] = "La taille n'est pas conforme";
+            $this->error[] = "$keyname doit être compris entre $min et $max caractères";
         }
         return $this;
     }
 
     public function checkRetype(string $passwordRetype){
         if($this->value != $passwordRetype){
-            $this->error[] = "Les deux mots de passes ne correspondes pas";
+            $this->error[] = "Les deux mots de passes ne correspondent pas";
         }
         return $this;
     }

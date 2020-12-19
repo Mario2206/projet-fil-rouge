@@ -21,12 +21,12 @@ class ArrayValidator {
         return $this->_errors;
     }
 
-    public function noEmptyValue() : self {
+    public function noEmptyValue(string $keyname) : self {
         $key = count($this->_value);
 
-         array_walk_recursive($this->_value, function($val)  use ($key) {
+         array_walk_recursive($this->_value, function($val)  use ($key, $keyname) {
              if(!$val) {
-                $this->_errors[$key] = "Array is empty"; 
+                $this->_errors[$key] = "$keyname n'ont pas de valeurs"; 
              }
         });
 

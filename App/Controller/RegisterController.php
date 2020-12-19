@@ -18,8 +18,7 @@ class RegisterController extends Controller{
     }   
 
     public function registerPage() {
-        $error = Session::get("error");
-        $this->render("registerView", compact("error"));
+        $this->render("registerView");
 
     }
     public function register(){
@@ -29,7 +28,7 @@ class RegisterController extends Controller{
         $validateError = $userForm->getErrors();
         
         if($validateError){
-            $this->redirectWithErrors("/register", "error");
+            $this->redirectWithErrors("/register", $validateError);
         }
 
         $uniqueUser = $this->userModel->checkUnique(["email" =>$_POST["email"], "password" =>$_POST["password"]]);
@@ -42,17 +41,17 @@ class RegisterController extends Controller{
                 $_POST["username"],
                 $_POST["email"],
                 $passwordHash,
-                $_POST["firstName"],
-                $_POST["lastName"] 
+                $_POST["firstname"],
+                $_POST["lastname"] 
             );
 
             if(!$result) $this->redirectWithErrors("/login", "Server Error");
 
-            $this->redirect("/login");
+            $this->redirect("/login", "Le compte a été créé correctement !");
 
-        }else{
-            Session::set("error", "Pseudo ou email incorrect");
-            $this->redirect("/register");
         }
+            
+        $this->redirectWithErrors("/register", "Pseudo ou email déjà utilisé");
+        
     }
 }

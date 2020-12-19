@@ -19,6 +19,9 @@ class LoginController extends Controller{
 
 
     public function loginPage(){
+        if(Session::get("user")) {
+            $this->redirect(BET_LIST);
+        }
         $this->render("connectionView");
     }
 
@@ -40,7 +43,7 @@ class LoginController extends Controller{
 
             Session::set("user", $existingUser);
 
-            $this->redirect(POLL_LIST);
+            $this->redirect(BET_LIST);
 
         }else{
             $this->redirectWithErrors(LOGIN,"Pseudo incorrect");
