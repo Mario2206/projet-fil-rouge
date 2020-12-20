@@ -50,5 +50,5 @@ ob_start();
 $content = ob_get_clean();
 $temp = new Template("Catégories de paris", [], ["index"]);
 $temp
-    ->setContextVars(compact("error", "success"))
+    ->setContextVars(compact("error", "success", "user"))
     ->render($content);

@@ -15,9 +15,10 @@ class Controller {
      */
     protected function render (string $pageName, array $vars = []) {
         extract($vars);
+        $user = Session::get("user");
         $error = Session::getError();
         $success = Session::get("success");
-        // Session::clean("success");
+        Session::clean("success");
         require(__DIR__ . "/../../App/View/$pageName.php");
     }
     

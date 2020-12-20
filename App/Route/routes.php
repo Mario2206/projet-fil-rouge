@@ -28,9 +28,15 @@ try {
 
     $router->get(BET_LIST_PRIVATE . "/:category", "BetListController", "ownBetListFromCategory");
 
-    $router->get(BET_REPORT . "/:betId", "BetReportController", "getBetReport");
+    $router->get(BET_REPORT . "/:betId", "BetManagerController", "getBetReport");
+
+    $router->get(BET_REPORT_DETAILS . "/:betId", "BetManagerController", "getResultsOfbet");
+
+    $router->get(BET_CLOSE . "/:betId", "BetManagerController", "closeBet");
 
     $router->get(BET_CREATION, "CreateBetController", "createBetPage");
+
+    $router->post(BET_CREATION, "CreateBetController", "createBet");
 
 
     //USER ROUTES

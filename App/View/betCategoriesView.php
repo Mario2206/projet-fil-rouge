@@ -1,9 +1,16 @@
 <?php
 
 use Core\View\Template\Template;
-
 ob_start();
 ?>
+<div class="p-1">
+    <div>
+        <img src="<?= MAIN_PATH ?>/img/trophy.svg" alt="trophy"/>
+        <span>
+            <?= $user->points ?> pts
+        </span>
+    </div>
+</div>
 <section class="px-1">
 
     <header class="flex justify--center py-1">
@@ -47,5 +54,5 @@ ob_start();
 $content = ob_get_clean();
 $temp = new Template("Catégories de paris", [], ["index"]);
 $temp
-    ->setContextVars(compact("error", "success"))
+    ->setContextVars(compact("error", "success", "user"))
     ->render($content);

@@ -21,7 +21,6 @@ const BET_RESPONSE_START = "/bet/response/start";
 const BET_LIST = "/bet";
 const BET_LIST_PRIVATE = "/own/bet";
 const BET_CREATION = "/create/bet";
-const BET_CREATED = "/bet/created";
 const BET_REPORT = "/bet/report";
 
 // FRIENDS ROUTES

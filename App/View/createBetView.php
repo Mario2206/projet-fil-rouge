@@ -14,7 +14,7 @@ ob_start();
         </div>
         <div class="flex--column align--center py-2">
             <label for="bet_category">Catégorie du pari</label>
-            <select id="bet_category">
+            <select id="bet_category" name="bet_category">
                 <?php foreach($categories as $category) : ?>
                     <option value="<?= $category->id ?>">
                         <?= $category->name ?>
@@ -50,5 +50,5 @@ ob_start();
 $content = ob_get_clean();
 $temp = new Template("Créer un pari", ["create-bet"], ["index"]);
 $temp
-    ->setContextVars(compact("error"))
+    ->setContextVars(compact("error", "success", "user"))
     ->render($content);

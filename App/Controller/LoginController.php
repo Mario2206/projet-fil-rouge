@@ -34,7 +34,7 @@ class LoginController extends Controller{
 
         if($existingUser){
 
-            $verifyPassword = new StringValidator($_POST["password"]);
+            $verifyPassword = new StringValidator($_POST["password"], "Mot de passe");
             $verifyPassword->checkPassword($existingUser->password);
 
             if($verifyPassword->getErrors()){

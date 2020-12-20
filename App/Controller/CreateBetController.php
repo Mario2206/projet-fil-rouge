@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Form\BetForm;
+
+use App\Form\CreateBetForm;
 use App\Model\AnswerModel;
 use App\Model\BetModel;
 use App\Model\CategoryModel;
-use App\Model\betModel;
 use App\Model\QuestionModel;
 use Core\Controller\Controller;
 use Core\Model\Converters\TypeConverter;
@@ -18,28 +18,36 @@ class CreateBetController extends Controller {
 
     private $user;
     private $categoryModel;
+    private $betModel;
+    private $questionModel;
+    private $answerModel;
 
 
     public function __construct()
     {
         $this->user = Session::get("user");
         $this->categoryModel = new CategoryModel();
-        $this->protectPageFor("user", "/login");
+        $this->betModel = new BetModel();
+        $this->questionModel = new QuestionModel();
+        $this->answerModel = new AnswerModel();
+
+        $this->protectPageFor("user", LOGIN);
     }
     
+    /**
+     * (GET) For displaying the create bet page
+     */
     public function createBetPage () {
         $categories = $this->categoryModel->getAllCategories();
         $this->render("createBetView", compact("categories"));
     }
 
-    public function confirmCreatebetPage () {
-        $this->render("confirmView", ["message" => "Le sondage a correctement été crée !"]);
-    }
-
+    /**
+     * (POST) For creating bet 
+     */
     public function createBet() {
-        
       
-        $betForm = new BetForm($_POST);
+        $betForm = new CreateBetForm($_POST);
 
         $betForm->validate();
 
@@ -52,28 +60,23 @@ class CreateBetController extends Controller {
         $betDescription = Cleaner::cleanHtml($_POST['bet_description']);
         $betAvailableDate =  $_POST["bet_available"];
         $betUnAvailableDate = $_POST["bet_unavailable"];
+        $betCategory = $_POST["bet_category"];
 
-        
-        $betQuestions = Cleaner::cleanArray( $_POST["bet_questions"]);
+        $betQuestions = Cleaner::cleanArray( $_POST["bet_questions"] );
         $betResponses = Cleaner::cleanArray( array_values($_POST["bet_responses"]));
 
-    
-        $betModel = new BetModel();
-        $betId = $betModel->insert($betName, $betDescription, $date, $this->user->idUser, $betAvailableDate, $betUnAvailableDate);
+
+        $betId = $this->betModel->insert($betName, $betDescription, $date, $this->user->idUser, $betAvailableDate, $betUnAvailableDate, $betCategory);
 
         if($betId) {
 
-            $questionModel = new QuestionModel();
-            $answerModel = new AnswerModel();
-
             foreach($betQuestions as $k=>$question) {
 
-                $qId = $questionModel->insert($betId, htmlspecialchars( $question ), $k);
+                $qId = $this->questionModel->insert($betId, htmlspecialchars( $question ), $k);
 
                 if($qId) {
                     
-                    
-                  $answerModel->insertMany($betResponses[$k],$qId);
+                  $this->answerModel->insertMany($betResponses[$k],$qId);
 
                 }
                 else 
@@ -82,7 +85,7 @@ class CreateBetController extends Controller {
                 }
                 
             }
-            $this->redirect(\BET_CREATED);
+            $this->redirect(\BET_LIST_PRIVATE, "Le pari a correctement été créé");
         } 
         else {
             throw new \Exception("The bet hasn't been created");

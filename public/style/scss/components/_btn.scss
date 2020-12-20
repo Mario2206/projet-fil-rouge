@@ -13,6 +13,16 @@
         opacity: .7;
         cursor: not-allowed;
     }
+
+    &--success {
+        @extend .cta;
+        background-color: $success;
+    }
+
+    &--danger {
+        @extend .cta;
+        background-color: $danger;
+    }
 }
 .burger-btn {
     width: 30px ;

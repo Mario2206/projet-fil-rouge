@@ -10,7 +10,7 @@ class BetModel extends Model {
         
         const TABLE_NAME = "bets";
 
-        const KEYS = ["betName", "description", "createdAt", "idUser", "availableAt", "unAvailableAt"];
+        const KEYS = ["betName", "description", "createdAt", "idOwner", "availableAt", "unAvailableAt", "betCategory"];
 
         public function __construct()
         {
@@ -30,7 +30,8 @@ class BetModel extends Model {
                 string $createdAt, 
                 string $user_id,
                 string $availableAt,
-                string $unvailableAt
+                string $unvailableAt, 
+                string $betCategory
         ) {
            return $this->_insert(self::KEYS, func_get_args());
         }
@@ -52,17 +53,18 @@ class BetModel extends Model {
          * 
          * @param string $categoryCode
          * @param string $userId (optional)
+         * @param bool $onlyAvailable
          * 
          * @return array
          */
-        public function findBetsFromCategory (string $categoryCode, string $userId = "") {
+        public function findBetsFromCategory (string $categoryCode, string $userId = "", bool $onlyAvailable = true) {
             $tableName = self::TABLE_NAME;
             $req = $this->_db->prepare("
             SELECT $tableName.idBet, $tableName.betName, $tableName.description, $tableName.createdAt, $tableName.availableAt, $tableName.unAvailableAt, users.username
             FROM $tableName 
             INNER JOIN bet_categories ON bet_categories.id = $tableName.betCategory
             INNER JOIN users ON users.idUser = $tableName.idOwner
-            WHERE bet_categories.code= ? AND $tableName.availableAt < NOW() AND $tableName.unAvailableAt > NOW()" . ( $userId ? " AND $tableName.idOwner = ?" : "")
+            WHERE bet_categories.code= ? " . ($onlyAvailable ? "AND $tableName.availableAt < NOW() AND $tableName.unAvailableAt > NOW()" : "" ). ( $userId ? " AND $tableName.idOwner = ?" : "")
             );
 
             $params = $userId ? [$categoryCode, $userId] : [ $categoryCode ];
@@ -74,38 +76,38 @@ class BetModel extends Model {
 
         /**
          * 
-         * For getting the poll with its questions and answers
+         * For getting the bet with its questions and answers
          * 
-         * @param string $pollId 
+         * @param string $betId 
          * 
          * @return array
          * 
          */
-        public function getPollAndRef(string $pollId) : array {
+        public function getBetAndRef(string $betId) : array {
 
-            $poll = $this->_find(["idPoll" => $pollId]);
+            $bet = $this->_find(["idBet" => $betId]);
 
             $req = $this->_db->prepare("
             SELECT questions.question, questions.idQuestion, answers.answer, COUNT(`user-answers`.idAnswer) AS nVoter FROM questions 
             INNER JOIN answers ON questions.idQuestion = answers.questionId 
             LEFT JOIN `user-answers` ON `user-answers`.idAnswer = answers.answerId
-            WHERE idPoll = :id_poll 
+            WHERE idBet = :id_bet 
             GROUP BY answers.answerId
             ");
             
-            $req->execute(["id_poll"=>$pollId]);
+            $req->execute(["id_bet"=>$betId]);
             $questions = $req->fetchAll();
             
             $formatedQuestions = ArrayMapper::groupByPropertyOfSubObject("question", ["answer", "idQuestion" , "nVoter"], $questions);
 
             return [
-                "poll" => $poll[0], 
+                "bet" => $bet[0], 
                 "questions" =>  $formatedQuestions
             ];
         }
 
-        public function update(array $data, string $pollId, string $userId) : int {
-            return $this->_update($data, ["idPoll" => $pollId, "idUser" => $userId]);
+        public function update(array $data, string $betId, string $userId) : int {
+            return $this->_update($data, ["idbet" => $betId, "idOwner" => $userId]);
         }
         
 

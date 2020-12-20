@@ -23,6 +23,13 @@ $margins : (
         }
     }
 }
+@mixin generateMarginX ($device : "") {
+    @for $i from 1 through 5 {
+        .mx-#{$i}#{$device} {
+            margin : 0 map-get($margins, $i) 
+        }
+    }
+}
 
 @mixin generatePaddingY ($device : "") {
     @for $i from 1 through 5 {
@@ -50,6 +57,7 @@ $margins : (
 
 //GENERATE MARGIN Y
 @include generateMarginY();
+@include generateMarginX();
 @include generatePaddingY();
 @include generatePaddingBottom();
 @include generatePaddingX();
@@ -58,6 +66,7 @@ $margins : (
 
 @media screen  and(max-width : $tabletSize) {
     @include generateMarginY("-tablet");
+    @include generateMarginX("-tablet");
     @include generatePaddingY("-tablet");
     @include generatePaddingBottom("-tablet");
     @include generatePaddingX("-tablet");
@@ -66,6 +75,7 @@ $margins : (
 
 @media screen and (max-width : $phoneSize) {
     @include generateMarginY( "-phone");
+    @include generateMarginX("-phone");
     @include generatePaddingY("-phone");
     @include generatePaddingBottom("-phone");
     @include generatePaddingX("-phone");

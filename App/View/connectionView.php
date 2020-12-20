@@ -31,5 +31,6 @@ ob_start();
 <?php 
 $content = ob_get_clean();
 $temp = new Template("Connexion", [], ["index"]);
-$temp->setContextVars(compact("error", "success"));
-$temp->render($content);
+$temp
+    ->setContextVars(compact("error", "success", "user"))
+    ->render($content);

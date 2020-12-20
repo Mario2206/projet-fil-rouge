@@ -1,23 +1,15 @@
-$paddingForWidth  : (100% - $semiLargeW) / 2;
-
-.large-container {
-    padding: 0 $paddingForWidth;
-}
-
-.large-container-extended {
-    width: $largeW;
-    padding: (100% - $semiLargeW) / 2;
-
-}
-
 .full-screen {
     min-height: 100vh;
 }
 
+.border {
 
-@media screen and (max-width : $phoneSize) {
-    .large-container {
-        padding: 0 ($paddingForWidth / 2) ;
+    border: 2px solid;
+
+    &--black {
+        @extend .border;
+        border-color: $black;
     }
-    
+
 }
+

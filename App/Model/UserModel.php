@@ -22,8 +22,8 @@ class UserModel extends Model{
         return $user ? $user[0] : [];
     }
 
-    public function save(string $pseudo, string $email, string $password, string $firstName, string $lastName){
-        return $this->_insert(["username", "email", "password", "firstName", "lastName"],[$pseudo, $email, $password, $firstName, $lastName]);
+    public function save(string $pseudo, string $email, string $password, string $firstName, string $lastName, int $points){
+        return $this->_insert(["username", "email", "password", "firstName", "lastName", "points"],func_get_args());
     }
 
     public function update(array $data, array $filters){

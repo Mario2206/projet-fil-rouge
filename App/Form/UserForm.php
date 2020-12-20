@@ -12,18 +12,18 @@ class UserForm extends AbstractForm{
 
         $this->checkPostKeys($this->formKeys, ["username", "email", "password", "password_retype", "firstname", "lastname"]);
 
-        $validatePseudo = new StringValidator($this->formValues['username']);
-        $validatePseudo->checkLength(2, 50, "pseudo");
+        $validatePseudo = new StringValidator($this->formValues['username'], "Pseudo");
+        $validatePseudo->checkLength(2, 50);
 
-        $validateEmail = new StringValidator($this->formValues['email']);
+        $validateEmail = new StringValidator($this->formValues['email'], "Mail");
         $validateEmail
             ->checkLength(10, 150, "e-mail")
             ->isEmail();
 
-        $validatePassword = new StringValidator($this->formValues['password']);
+        $validatePassword = new StringValidator($this->formValues['password'], "Mot de passe");
         $validatePassword->checkLength(10, 150, "mot de passe");
 
-        $validateRetype = new StringValidator($this->formValues['password_retype']);
+        $validateRetype = new StringValidator($this->formValues['password_retype'], "Confirmation du mot de passe");
         $validateRetype->checkRetype($this->formValues['password']);
 
         $this->processValidatorErrors([$validatePseudo, $validateEmail, $validatePassword, $validateRetype]);

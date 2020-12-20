@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\OpenPollForm;
+use App\Form\OpenBetForm;
 use App\Model\BetModel;
-use App\Model\PollModel;
 use Core\Controller\Controller;
 use Core\Model\Converters\TypeConverter;
 use Core\Tools\Session;
@@ -18,101 +17,108 @@ class BetManagerController extends Controller {
     public function __construct()
     {
         $this->user = Session::get("user");
-        $this->protectPageFor("user", "/login");
+        $this->protectPageFor("user", LOGIN);
         $this->betModel = new BetModel();
         
     }
 
+
+
     /**
-     * GET : display poll report page
+     * (GET) display bet report page
      * 
-     * @param string $idPoll
+     * @param string $idbet
      */
 
-    public function getPollReport( string $idPoll) {
+    public function getBetReport( string $idbet) {
 
-        $this->protectAgainstCheat($idPoll);
+        $this->protectAgainstCheat($idbet);
 
-        $poll = $this->betModel->find(["idPoll"=>$idPoll]);
+        $bet = $this->betModel->find(["idBet"=>$idbet]);
         $currentDate = TypeConverter::stringifyDate(new DateTime());
         
-        $this->render("poll-report", ["poll" => $poll[0], "currentDate" => $currentDate]);
+        $this->render("betReportView", ["bet" => $bet[0], "currentDate" => $currentDate]);
 
     }
 
-    public function getResultsOfPoll(string $idPoll) {
-        $this->protectAgainstCheat($idPoll);
+    /**
+     * (GET) For sending results of one bet (JSON FORMAT)
+     * 
+     * @param string $idBet
+     */
+    public function getResultsOfbet(string $idbet) {
+        $this->protectAgainstCheat($idbet);
 
-        $dataPoll = $this->betModel->getPollAndRef($idPoll);
-        $poll = $dataPoll["poll"]; 
-        $questions = $dataPoll["questions"];
+        $databet = $this->betModel->getbetAndRef($idbet);
+        $bet = $databet["bet"]; 
+        $questions = $databet["questions"];
         $currentDate = TypeConverter::stringifyDate(new DateTime());
 
-        $this->renderJson(["poll" => $poll, "questions" => $questions, "currentDate" =>$currentDate], HTTP_GOOD_REQ);
+        $this->renderJson(["bet" => $bet, "questions" => $questions, "currentDate" =>$currentDate], HTTP_GOOD_REQ);
 
 
     }
 
     /**
-     * GET : Close poll
+     * (GET) Close bet
      * 
-     * @param string $pollId
+     * @param string $betId
      */
-    public function closePoll(string $pollId) {
+    public function closeBet(string $betId) {
 
-        $this->protectAgainstCheat($pollId);
+        $this->protectAgainstCheat($betId);
         
         $closeDate = TypeConverter::stringifyDate(new DateTime());
-        $res = $this->pollModel->update(["unAvailableAt" => $closeDate], $pollId, $this->user->idUser);
+        $res = $this->betModel->update(["unAvailableAt" => $closeDate], $betId, $this->user->idUser);
 
         if($res) {
-            $this->redirect(POLL_LIST);
+            $this->redirect(BET_LIST);
         }
         else 
         {
-            $this->redirectWithErrors(POLL_LIST, "Le sondage n'a pas pu être clôturé");
+            $this->redirectWithErrors(BET_LIST, "Le sondage n'a pas pu être clôturé");
         }
     }
 
     /**
-     * POST : Open poll
+     * (POST) Open bet
      * 
-     * @param string $pollId
+     * @param string $betId
      */
-    public function openPoll(string $pollId) {
+    public function openbet(string $betId) {
 
-        $this->protectAgainstCheat($pollId);
+        $this->protectAgainstCheat($betId);
 
-        $openPollForm = new OpenPollForm($_POST);
-        $openPollForm->validate();
+        $openbetForm = new OpenBetForm($_POST);
+        $openbetForm->validate();
        
-        $res = $this->pollModel->update(
+        $res = $this->betModel->update(
             ["availableAt"=>$_POST["availableAt"], "unAvailableAt" => $_POST["unAvailableAt"]],
-            $pollId,  
+            $betId,  
             $this->user->idUser
          );
 
          if($res) {
-             $this->redirect(POLL_LIST);
+             $this->redirect(BET_LIST);
          }
          
-         $this->redirectWithErrors(POLL_LIST, "Erreur lors de l'ouverture du sondage");
+         $this->redirectWithErrors(BET_LIST, "Erreur lors de l'ouverture du sondage");
 
 
     }
 
     /**
-     * For blocking a lambda user who tries to modify a poll which isn't his
-     * (redirect on poll list route)
+     * For blocking a lambda user who tries to modify a bet 
+     * (redirect on bet list route)
      * 
-     * @param string $pollId
+     * @param string $betId
      */
 
-    private function protectAgainstCheat(string $pollId) {
-        $poll = $this->pollModel->find(["idPoll" => $pollId, "idUser"=>$this->user->idUser]);
+    private function protectAgainstCheat(string $betId) {
+        $bet = $this->betModel->find(["idBet" => $betId, "idOwner"=>$this->user->idUser]);
 
-        if(!$poll) {
-            $this->redirect(POLL_LIST);
+        if(!$bet) {
+            $this->redirect(BET_LIST);
         }
     }
 

@@ -4,7 +4,7 @@ namespace App\Form;
 
 use Core\Validator\AbstractForm;
 
-class OpenPollForm extends AbstractForm {
+class OpenBetForm extends AbstractForm {
 
     public function validate() {
 

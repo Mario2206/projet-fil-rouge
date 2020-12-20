@@ -42,16 +42,17 @@ class RegisterController extends Controller{
                 $_POST["email"],
                 $passwordHash,
                 $_POST["firstname"],
-                $_POST["lastname"] 
+                $_POST["lastname"],
+                500 
             );
 
             if(!$result) $this->redirectWithErrors("/login", "Server Error");
 
-            $this->redirect("/login", "Le compte a été créé correctement !");
+            $this->redirect(LOGIN, "Le compte a été créé correctement !");
 
         }
             
-        $this->redirectWithErrors("/register", "Pseudo ou email déjà utilisé");
+        $this->redirectWithErrors(REGISTER, "Pseudo ou email déjà utilisé");
         
     }
 }

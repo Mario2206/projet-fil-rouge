@@ -1,12 +1,12 @@
-const pollId = $("#poll-id").val()
-
+const pollId = $("#bet-id").val()
+console.log(MAIN_PATH + "/bet/report/details/" + pollId);
 /**
  * For displaying results comming from server
  */
 function displayResults () {
 
     $.ajax({
-        url : MAIN_PATH + "/poll/report/details/" + pollId,
+        url : MAIN_PATH + "/bet/report/details/" + pollId,
         dataType : "Json"
     })
     .done((res)=> {
@@ -17,19 +17,19 @@ function displayResults () {
             
             resultsHtml.push(`
 
-                <article class="py-5">
+                <article class="py-1 col6">
 
-                    <h2 class="py-4">
+                    <h2 class="py-2">
 
                         ${question}
 
                     </h2>
 
-                    <ul>
+                    <ul class="flex--column align--center col12">
 
                     ${res.questions[question].map(answer=> (`
                     
-                        <li class="list-group-item d-flex flex-column">
+                        <li class="flex--column col12 my-2 p-1 border--black">
 
                             <p>
 
@@ -37,7 +37,7 @@ function displayResults () {
 
                             </p>
 
-                            <strong class="align-self-end">
+                            <strong class="self--end py-2">
 
                                 Nombre de votants : ${answer.nVoter}
 
@@ -49,7 +49,7 @@ function displayResults () {
                     
                     </ul>
 
-                <article>
+                </article>
             
             `)
 

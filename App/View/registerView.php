@@ -55,4 +55,6 @@ ob_start();
 $content = ob_get_clean();
 $temp = new Template("S'inscrire", [], ["index"]);
 $temp->setContextVars(compact("error"));
-$temp->render($content);
+$temp
+    ->setContextVars(compact("error", "success", "user"))
+    ->render($content);
