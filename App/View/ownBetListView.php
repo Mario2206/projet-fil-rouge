@@ -8,7 +8,7 @@ ob_start();
 
         <header class="flex justify--center py-1">
             <h1>
-                Liste de vos sondages
+                Liste de vos paris personnalisés : <span class="style--underline"> <?= $category->name ?> </span>
             </h1>
         </header>
         <div class="flex">

@@ -67,14 +67,20 @@ try {
 
     $router->get(LOG_OUT, "LoginController", "logout");
 
+    //CHAT ROUTE 
+
+    $router->get(CHAT . "/:idFriend", "ChatController", "chatPage");
+
+    $router->get(CHAT_MESS . "/:idFriend", "ChatController", "getMessages");
+
+    $router->post(CHAT_MESS . "/:idFriend", "ChatController", "postMessage");
+
     // FRIENDS
     $router->get(FRIENDS, "FriendsController", "friendsPage");
 
     $router->post(FRIENDS, "FriendsController", "addFriend");
 
-    $router->get(FRIENDS_ACCEPT . "/:friendId", "FriendsController", "acceptFriend");
-
-    $router->get(FRIENDS_REJECT . "/:friendId", "FriendsController", "rejectFriend");
+    $router->get(FRIENDS_REJECT . "/:friendId", "FriendsController", "removeFriend");
 
     $router->get("/404", "NotFoundController", "displayError");
 

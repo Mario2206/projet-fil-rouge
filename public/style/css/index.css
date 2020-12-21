@@ -533,7 +533,7 @@ a {
     display: flex; }
   .form--input {
     margin: 0 10px;
-    padding: 0 10px; }
+    padding: 10px; }
 
 .top-bar {
   display: flex;
@@ -566,7 +566,7 @@ a {
   display: inline-flex;
   align-items: center;
   border: 2px solid white;
-  padding: 20px 30px;
+  padding: 10px 30px;
   text-decoration: none;
   font-weight: 700;
   color: white;
@@ -631,6 +631,15 @@ a {
   border: 2px solid; }
   .border--black {
     border-color: #42495B; }
+
+.chat-box {
+  padding: 10px;
+  border: 2px solid #42495B;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll; }
 
 .card {
   border: 2px solid #42495B; }

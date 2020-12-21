@@ -28,11 +28,13 @@ class BetListController extends Controller {
      * @param string $categoryCode
      */
     public function ownBetListFromCategory (string $categoryCode) {
-        $bets = $this->betModel->findBetsFromCategory( $categoryCode, $this->user->idUser, false );
 
+        $bets = $this->betModel->findBetsFromCategory( $categoryCode, $this->user->idUser, false );
+        $category = $this->categoryModel->findByCode($categoryCode);
+        
         $currentDate = date(TypeConverter::DATE_FORMAT);
 
-        $this->render("ownBetListView", compact("bets", "currentDate"));
+        $this->render("ownBetListView", compact("bets", "currentDate", "category"));
     }
 
     /**

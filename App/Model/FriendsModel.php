@@ -23,53 +23,42 @@ class FriendsModel extends Model{
         return $this->_find($filters, $wantedValue, $limit, $order);
     }
 
-    public function getFriends(string $userId){
-
-        $req = $this->_db->prepare('SELECT users.username, friends.accepted, friends.idFriend FROM `friends` INNER JOIN users WHERE friends.idFriend = users.idUser AND friends.idUser = :id_user');
-        $req->execute(["id_user" => $userId]);
-        $friends = $req->fetchAll();
-
-        return $friends;
+    public function getOneFriend(string $userId, string $friendId = "") {
+        $friends = $this->getFriends($userId, $friendId);
+        return $friends ? $friends[0] : null; 
     }
 
-    public function findFriendId(string $friendUsername){
+    public function getFriends(string $userId, string $friendId = ""){
 
-        $req = $this->_db->prepare('SELECT idUser FROM users WHERE username = :friend_username');
-        $req->execute(["friend_username" => $friendUsername]);
-        $friendId = $req->fetchAll();
-
-        
-        return $friendId;
+        $req = $this->_db->prepare('
+        SELECT users.username, friends.idFriend, friends.idUser AS idFriend FROM `friends`
+        INNER JOIN users ON users.idUser = friends.idUser 
+        WHERE friends.idFriend = ?
+        ' . ($friendId ? " AND friends.idUser = ?" : "")
+        );
+        $req->execute($friendId ? [$userId, $friendId] : [$userId]);
+        return $req->fetchAll();
     }
 
-    public function friendsYet(string $userId, string $friendId){
-
-        $req = $this->_db->prepare('SELECT idFriend FROM friends WHERE idUser = :id_user AND idFriend = :id_friend');
-        $req->execute(["id_user" => $userId, "id_friend" => $friendId]);
+    public function alreadyFriend(string $userId, string $friendId){
         
-        $friend = $req->fetchAll();
+        $friend = $this->_find(["idUser"=>$userId, "idFriend" => $friendId]);
 
         return count($friend) > 0;
     }
 
     public function addFriend(string $userId, string $friendId){
-        return $this->_insertMany(["idUser", "idFriend", "accepted"],[[$userId, $friendId, 1],[$friendId, $userId, 0]]);
+        return $this->_insertMany(["idUser", "idFriend"],[[$userId, $friendId],[$friendId, $userId]]);
 
     }
 
-    public function rejectFriend(string $userId, string $friendId){
+    public function deleteFriend(string $userId, string $friendId){
 
         return [
             $this->_delete("friends", ["idFriend" => $friendId, "idUser" => $userId]),
             $this->_delete("friends", ["idFriend" => $userId, "idUser" => $friendId])
         ];
 
-
-    }
-
-    public function acceptFriend(string $userId, string $friendId){
-
-        $this->_update(["accepted" => 1], ["idUser" => $userId, "idFriend" => $friendId]);
 
     }
 

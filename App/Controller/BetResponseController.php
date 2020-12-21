@@ -36,6 +36,13 @@ class BetResponseController extends Controller {
      */
     public function startPage(string $betId) {
 
+        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, 0, $this->user->idUser);
+
+        if($answerAlreadyExist) {
+            
+            $this->redirectWithErrors(BET_LIST, "L'utilisateur a déjà participé au pari");
+        }
+
         $bet = $this->betModel->find(["idBet" => $betId]);
 
         if(!$bet) {
@@ -65,13 +72,18 @@ class BetResponseController extends Controller {
      * (GET) For getting specific question (JSON FORMAT)
      * 
      * @param string $betId
-     * @param string $questionNumber
+     * @param string $questionOrder
      */
-    public function getQuestion($betId, $questionNumber) {
+    public function getQuestion($betId, $questionOrder) {
         
-        $this->protectAgainstDoubleAnswers($betId, $questionNumber - 1);
+        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, $questionOrder - 1, $this->user->idUser);
 
-        $question = $this->questionModel->findQuestionWithAnswers($betId, $questionNumber - 1);
+        if($answerAlreadyExist) {
+            
+            $this->renderJson("L'utilisateur a déjà participé à ce pari", HTTP_BAD_REQ);
+        }
+
+        $question = $this->questionModel->findQuestionWithAnswers($betId, $questionOrder - 1);
 
         if($question) {
             $this->renderJson($question, HTTP_GOOD_REQ);
@@ -90,7 +102,12 @@ class BetResponseController extends Controller {
      */
     public function recieveAnswer (string $betId, int $questionOrder) {
       
-        $this->protectAgainstDoubleAnswers($betId, $questionOrder - 1);
+        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, $questionOrder - 1, $this->user->idUser);
+
+        if($answerAlreadyExist) {
+            
+            $this->renderJson("L'utilisateur a déjà participé à ce pari", HTTP_BAD_REQ);
+        }
 
         $this->userAnswerModel->saveUserAnswer($_POST["bet-answer"], $this->user->idUser, $_POST["idQuestion"]);
 
@@ -104,20 +121,6 @@ class BetResponseController extends Controller {
         , HTTP_CREATED);
               
    
-    }
-
-    /**
-     * For protecting against double answers by the same user
-     * 
-     * @param string $betId
-     * @param int $questionOrder
-     */
-    private function protectAgainstDoubleAnswers($betId, $questionOrder) {
-        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, $questionOrder, $this->user->idUser);
-
-        if($answerAlreadyExist) {
-            $this->renderJson("L'utilisateur a déjà participé à ce pari", HTTP_BAD_REQ);
-        }
     }
 
 }

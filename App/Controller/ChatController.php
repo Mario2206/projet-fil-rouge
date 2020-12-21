@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\MessagesForm;
-use App\Model\PollMessagesModel;
-use App\Model\PollModel;
+use App\Model\FriendsModel;
+use App\Model\MessagesModel;
 use Core\Controller\Controller;
 use Core\Tools\Session;
 
@@ -12,35 +12,48 @@ use Core\Tools\Session;
 class ChatController extends Controller {
 
     private $user;
-    private $pollModel;
+    private $friendsModel;
     private $messagesModel;
 
     public function __construct()
     {
-        $this->protectPageFor("user", POLL_LIST_FRIENDS);
+        $this->protectPageFor("user", FRIENDS);
         $this->user = Session::get("user");
-        $this->messagesModel = new PollMessagesModel();
-        $this->pollModel = new PollModel();
+        $this->messagesModel = new MessagesModel();
+        $this->friendsModel = new FriendsModel();
     }
 
+    /**
+     * (GET) Chat page
+     * 
+     * @param string $idFriend 
+     */
+    public function chatPage (string $idFriend) {
 
-    public function chatPage ($pollId) {
-
-        $poll = $this->pollModel->find(["idPoll" => $pollId]);
-        
-        if(!$poll) {
-            $this->redirectWithErrors(POLL_LIST_FRIENDS, "Le sondage n'existe pas");
+        $friend = $this->friendsModel->getOneFriend($this->user->idUser, $idFriend);
+        if(!$friend) {
+            $this->redirectWithErrors(FRIENDS, "L'utilisateur ne fait pas parti de vos amis");
         }
 
-        $this->render("pollChatView", ["poll" => $poll[0]]);
+        $this->render("chatView", compact("friend"));
     }
 
-    public function getMessages($idPoll) {
-        $messages = $this->messagesModel->findAllMessages($idPoll);
+    /**
+     * (GET) For sending message
+     * 
+     * @param string $idFriend
+     */
+    public function getMessages( string $idFriend) {
+        $messages = $this->messagesModel->findAllMessages($this->user->idUser,$idFriend);
         $this->renderJson($messages, HTTP_GOOD_REQ);
     }
 
-    public function postMessage($idPoll) {
+    /**
+     * (POST) For persisting messages in database
+     * 
+     * @param string $idFriend
+     */
+    public function postMessage(string $idFriend) {
 
         $messageForm = new MessagesForm($_POST);
         $messageForm->validate();
@@ -49,7 +62,7 @@ class ChatController extends Controller {
             $this->renderJson("Le message n'est pas conforme", HTTP_BAD_REQ);
         }
 
-        $this->messagesModel->insert($_POST["poll-message"], $this->user->idUser, $idPoll);
+        $this->messagesModel->saveMessage($_POST["message"], $this->user->idUser, $idFriend);
 
         $this->renderJson("Message created", HTTP_CREATED);
 

@@ -3,16 +3,22 @@
 namespace App\Controller;
 
 use App\Model\FriendsModel;
+use App\Model\UserModel;
 use Core\Controller\Controller;
 use Core\Tools\Session;
 
 class FriendsController extends Controller{
 
     private $friendsModel;
+    private $userModel;
     private $user;
 
     public function __construct(){
+        $this->protectPageFor("user", LOGIN);
+        
         $this->friendsModel = new FriendsModel();
+        $this->userModel = new UserModel();
+
         $this->user = Session::get("user");
     }
 
@@ -21,54 +27,38 @@ class FriendsController extends Controller{
         $idUser = $this->user->idUser;
 
         $friends = $this->friendsModel->getFriends($idUser);
-
         $this->render("friendsView", compact("friends"));
 
     }
 
     public function addFriend(){
 
-        $idUser = $this->user->idUser;
-
-        $varFriend = $this->friendsModel->findFriendId($_POST["username"]);
-
-        if(!$varFriend) {
-            $this->redirect(FRIENDS);
+        if(!isset($_POST["username"]) || !$_POST["username"]) {
+            $this->redirectWithErrors(FRIENDS, "La requête a échoué");
         }
 
-        $idFriend = $varFriend[0]->idUser;
+        $searchedUser = $this->userModel->findOne(["username" => $_POST["username"]]);
 
-        if($_POST["username"] != "" && $idFriend != $idUser){
-
-            $friendsYet = $this->friendsModel->friendsYet($idUser, $idFriend);
-    
-            if(!$friendsYet){
-                $this->friendsModel->addFriend($idUser, $idFriend);
-            }
+        if(!$searchedUser) {
+            $this->redirectWithErrors(FRIENDS, "Aucun utilisateur trouvé");
         }
 
-        
+        $alreadyFriend = $this->friendsModel->alreadyFriend($this->user->idUser, $searchedUser->idUser);
 
+        if($alreadyFriend){
+            $this->redirectWithErrors(FRIENDS, "Vous ne pouvez pas ajouter un utilisateur qui est déjà dans votre liste d'amis");   
+        }
+
+        $this->friendsModel->addFriend($this->user->idUser, $searchedUser->idUser);
+        $this->redirect(FRIENDS, "Ami ajouté !");
 
     }
 
-
-    public function acceptFriend($friendId){
-        
-        $idUser = $this->user->idUser;
-
-        $this->friendsModel->acceptFriend($idUser, $friendId);
-
-        $this->redirect(FRIENDS);
-
-    }
-
-
-    public function rejectFriend($friendId){
+    public function removeFriend($friendId){
 
         $idUser = $this->user->idUser;
 
-        $this->friendsModel->rejectFriend($idUser, $friendId);
+        $this->friendsModel->deleteFriend($idUser, $friendId);
 
         $this->redirect(FRIENDS);
     }

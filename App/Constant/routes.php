@@ -9,6 +9,9 @@ const LOGIN = "/login";
 const ACCOUNT = "/account";
 const LOG_OUT = "/logout";
 
+//CHAT ROUTE 
+const CHAT = "/chat";
+const CHAT_MESS = "/message";
 
 
 //BET CUSTOMER ROUTE 
@@ -30,5 +33,4 @@ const BET_REPORT_DETAILS = "/bet/report/details";
 
 // FRIENDS ROUTES
 const FRIENDS = "/friends";
-const FRIENDS_ACCEPT = "/friends/accept";
 const FRIENDS_REJECT = "/friends/reject";
