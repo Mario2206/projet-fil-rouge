@@ -57,17 +57,19 @@ class BetModel extends Model {
          * 
          * @return array
          */
-        public function findBetsFromCategory (string $categoryCode, string $userId = "", bool $onlyAvailable = true) {
+        public function findBetsFromCategory (string $categoryCode, string $userId = "", bool $onlyPublicBet = true) {
             $tableName = self::TABLE_NAME;
-            $req = $this->_db->prepare("
+            $query = "
             SELECT $tableName.idBet, $tableName.betName, $tableName.description, $tableName.createdAt, $tableName.availableAt, $tableName.unAvailableAt, users.username
             FROM $tableName 
             INNER JOIN bet_categories ON bet_categories.id = $tableName.betCategory
             INNER JOIN users ON users.idUser = $tableName.idOwner
-            WHERE bet_categories.code= ? " . ($onlyAvailable ? "AND $tableName.availableAt < NOW() AND $tableName.unAvailableAt > NOW()" : "" ). ( $userId ? " AND $tableName.idOwner = ?" : "")
-            );
+            WHERE bet_categories.code= ?  " . ($onlyPublicBet ? "AND $tableName.availableAt < NOW() AND $tableName.unAvailableAt > NOW() AND $tableName.idOwner <> ?" : "" ). ( $onlyPublicBet ? "" : " AND $tableName.idOwner = ?");
 
-            $params = $userId ? [$categoryCode, $userId] : [ $categoryCode ];
+        
+            $req = $this->_db->prepare($query);
+         
+            $params =  [$categoryCode, $userId];
 
             $req->execute($params);
 

@@ -11,11 +11,11 @@ function disponibilityModal (string $pollId) {
                         <h5 class="modal-title" id="exampleModalLongTitle">Définir les nouvelles dates de disponibilité</h5>
                     </div>
                     <div class="modal-body">
-                            <div>
+                            <div class="py-2">
                                 <label for="available-date">Disponible le</label>
                                 <input type="date" name="availableAt" id="available-date"/>
                             </div>
-                            <div>
+                            <div class="py-2">
                                 <label for="unavailable-date">Indisponbile dès</label>
                                 <input type="date" name="unAvailableAt" id="unavailable-date"/>
                             </div>

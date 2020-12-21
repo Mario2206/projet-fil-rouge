@@ -6,5 +6,9 @@
         <a href="<?= MAIN_PATH . BET_LIST ?>" class="top-bar--nav--items">Paris disponibles</a>
         <a href="<?= MAIN_PATH . BET_LIST_PRIVATE ?>" class="top-bar--nav--items">Mes paris personnalisés</a>
     </nav>
-    <a href="<?= MAIN_PATH . LOG_OUT ?>" class="top-bar--nav--items">Se déconnecter</a>
+    <div>
+        <a href="<?= MAIN_PATH . FRIENDS ?>" class="top-bar--nav--items">Amis</a>
+        <a href="<?= MAIN_PATH . LOG_OUT ?>" class="top-bar--nav--items">Se déconnecter</a>
+    </div>
+    
 </header>

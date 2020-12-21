@@ -22,13 +22,24 @@ class BetListController extends Controller {
         $this->categoryModel = new CategoryModel();
     }
 
+    /**
+     * (GET) For getting the bets created by the current user from a specific category
+     * 
+     * @param string $categoryCode
+     */
     public function ownBetListFromCategory (string $categoryCode) {
         $bets = $this->betModel->findBetsFromCategory( $categoryCode, $this->user->idUser, false );
+
         $currentDate = date(TypeConverter::DATE_FORMAT);
 
         $this->render("ownBetListView", compact("bets", "currentDate"));
     }
 
+    /**
+     * (GET) For getting all available bet from a specific category
+     * 
+     * @param string $categoryCode
+     */
     public function globalBetListFromCategory(string $categoryCode) {
 
         $category = $this->categoryModel->findByCode($categoryCode);
@@ -37,7 +48,7 @@ class BetListController extends Controller {
             $this->redirectWithErrors(BET_LIST, "La catégorie souhaitée n'existe pas");
         }
 
-        $bets = $this->betModel->findBetsFromCategory($categoryCode);
+        $bets = $this->betModel->findBetsFromCategory($categoryCode , $this->user->idUser);
         
         $this->render("betListView", compact("bets", "category"));
     }

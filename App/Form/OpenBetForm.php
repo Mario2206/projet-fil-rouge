@@ -8,7 +8,7 @@ class OpenBetForm extends AbstractForm {
 
     public function validate() {
 
-        $this->checkPostKeys($this->formValues, ["availableAt", "unAvailableAt"]);
+        $this->checkPostKeys($this->formKeys, ["availableAt", "unAvailableAt"]);
 
         //TODO : DATE VALIDATOR
 

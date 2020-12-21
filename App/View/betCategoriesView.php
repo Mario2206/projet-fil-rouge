@@ -2,15 +2,10 @@
 
 use Core\View\Template\Template;
 ob_start();
+
+require(ROOT . "\App\View\inc\pointsComponent.php");
 ?>
-<div class="p-1">
-    <div>
-        <img src="<?= MAIN_PATH ?>/img/trophy.svg" alt="trophy"/>
-        <span>
-            <?= $user->points ?> pts
-        </span>
-    </div>
-</div>
+
 <section class="px-1">
 
     <header class="flex justify--center py-1">

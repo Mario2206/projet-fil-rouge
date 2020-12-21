@@ -29,7 +29,7 @@ class UserAnswersModel extends Model {
     public function alreadyAnswered ( $pollId,  $questionOrder ,  $userId) {
         $tableName  = self::TABLE_NAME;
 
-        $req = $this->_db->prepare("SELECT COUNT(*) as answerFound FROM `$tableName` INNER JOIN questions ON questions.idQuestion = `$tableName`. idQuestion  WHERE `$tableName`.idUser = ? AND questions.questionOrder = ? AND questions.idPoll = ?" );
+        $req = $this->_db->prepare("SELECT COUNT(*) as answerFound FROM `$tableName` INNER JOIN questions ON questions.idQuestion = `$tableName`. idQuestion  WHERE `$tableName`.idUser = ? AND questions.questionOrder = ? AND questions.idBet = ?" );
 
         $req->execute([$userId, $questionOrder, $pollId]);
 

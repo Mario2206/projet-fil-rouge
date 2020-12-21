@@ -9,7 +9,7 @@ ob_start();
 
     <?php 
         require(ROOT . "\App\View\inc\disponibilityModal.php");
-        disponibilityModal($user->idUser);
+        disponibilityModal($bet->idBet);
     ?>
 
     <header class="flex--column align--center">

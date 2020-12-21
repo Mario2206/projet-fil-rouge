@@ -26,6 +26,10 @@ class UserModel extends Model{
         return $this->_insert(["username", "email", "password", "firstName", "lastName", "points"],func_get_args());
     }
 
+    public function updateUserPoints($newPointsQuantity, $idUser) {
+        return $this->_update(["points" => $newPointsQuantity], ["idUser" => $idUser]);
+    }
+
     public function update(array $data, array $filters){
         return $this->_update($data, $filters);
     }

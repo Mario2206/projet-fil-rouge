@@ -1,9 +1,9 @@
-const pollId = $("#poll-response-form").data("poll-id");
+const betId = $("#bet-response-form").data("bet-id");
 let idQuestion = 0;
 let currentQuestion = 1
 
 /**
- * DISPLAY END COMPONENT (WHEN POLL IS OVER)
+ * DISPLAY END COMPONENT (WHEN bet IS OVER)
  * 
  * @param string testContent
  */
@@ -12,7 +12,6 @@ function displayEndComponent(textContent) {
         <h1>
             ${textContent}
         </h1>
-        <a href="${MAIN_PATH + "/poll/chat/" + pollId}" class="btn btn-success" title="Accéder au chat du sondage">Accéder au chat du sondage </a>
     `)
 }
 
@@ -23,9 +22,9 @@ function displayEndComponent(textContent) {
  */
 function displayQuestion (currentQuestion) {
     
-
+    
     $.ajax({
-        url : MAIN_PATH + "/poll/response/" + pollId + "/" + currentQuestion,
+        url : MAIN_PATH + "/bet/response/" + betId + "/" + currentQuestion,
         accepts : {
             json : 'application/json'
         },
@@ -33,24 +32,24 @@ function displayQuestion (currentQuestion) {
     })
 
     .done((question)=> {
-        
+        console.log(question);
         const questionKey = Object.keys(question)
 
         idQuestion = question[questionKey][0].idQuestion
 
         const answers = question[questionKey].map(answer => `
-            <div class="d-flex align-items-center border mx-3">
-                <label for="${answer.answerId}">${answer.answer}</label>
-                <input type="radio" name="poll-answer" value="${answer.answerId}" id="${answer.answerId}" />
-            </div>
+            <label for="${answer.answerId}" class=" border p-1 my-1 flex justify--center col10">
+                ${answer.answer}
+                <input type="radio" name="bet-answer" value="${answer.answerId}" id="${answer.answerId}" />
+            </label>
         `)
         
         const questionComponent = $(`
         
-            <div class="d-flex flex-column align-items-center py-5">
+            <div class="flex--column align--center py-5">
                 <h2 class="py-5">${questionKey}</h2>
 
-                <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around col12">
                     ${answers.join("")}
                 </div>
 
@@ -62,11 +61,12 @@ function displayQuestion (currentQuestion) {
         
         `)
 
-        $("#poll-response-form").html(questionComponent)
+        $("#bet-response-form").html(questionComponent)
     })
 
-    .fail(()=> {
-        displayEndComponent("Le sondage a déjà été complété !")
+    .fail((res)=> {
+        console.log(res);
+        displayEndComponent(res.responseJSON)
     })
 
 }
@@ -80,9 +80,9 @@ function displayQuestion (currentQuestion) {
 function sendAnswer (answer) {
 
     $.ajax({
-        url : MAIN_PATH + "/poll/response/" + pollId + "/" + currentQuestion,
+        url : MAIN_PATH + "/bet/response/" + betId + "/" + currentQuestion,
         method : "POST",
-        data : {["poll-answer"] : answer[0].value, idQuestion },
+        data : {["bet-answer"] : answer[0].value, idQuestion },
         accepts : {
             json : 'application/json'
         },
@@ -97,7 +97,7 @@ function sendAnswer (answer) {
            return displayQuestion(currentQuestion)
         }
         
-       displayEndComponent("Merci d'avoir répondu au sondage")
+       displayEndComponent("Votre pari a correctement été enregistré")
 
         
     })
@@ -110,7 +110,7 @@ function sendAnswer (answer) {
 
 //ADD SUBMIT EVENT TO FORM
 
-$("#poll-response-form").submit((e)=> {
+$("#bet-response-form").submit((e)=> {
 
     e.preventDefault()
 

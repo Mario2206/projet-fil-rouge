@@ -72,11 +72,11 @@ class BetManagerController extends Controller {
         $res = $this->betModel->update(["unAvailableAt" => $closeDate], $betId, $this->user->idUser);
 
         if($res) {
-            $this->redirect(BET_LIST);
+            $this->redirect(BET_LIST_PRIVATE, "Le pari a été correctement clôturé");
         }
         else 
         {
-            $this->redirectWithErrors(BET_LIST, "Le sondage n'a pas pu être clôturé");
+            $this->redirectWithErrors(BET_LIST_PRIVATE, "Le pari n'a pas pu être clôturé");
         }
     }
 
@@ -85,7 +85,7 @@ class BetManagerController extends Controller {
      * 
      * @param string $betId
      */
-    public function openbet(string $betId) {
+    public function openBet(string $betId) {
 
         $this->protectAgainstCheat($betId);
 
@@ -99,10 +99,10 @@ class BetManagerController extends Controller {
          );
 
          if($res) {
-             $this->redirect(BET_LIST);
+             $this->redirect(BET_LIST_PRIVATE, "Le sondage a correctement été ouvert");
          }
          
-         $this->redirectWithErrors(BET_LIST, "Erreur lors de l'ouverture du sondage");
+         $this->redirectWithErrors(BET_LIST_PRIVATE, "Erreur lors de l'ouverture du sondage");
 
 
     }
@@ -118,7 +118,7 @@ class BetManagerController extends Controller {
         $bet = $this->betModel->find(["idBet" => $betId, "idOwner"=>$this->user->idUser]);
 
         if(!$bet) {
-            $this->redirect(BET_LIST);
+            $this->redirectWithErrors(BET_LIST, "Vous n'avez pas l'autoristation de modifier ce sondage");
         }
     }
 

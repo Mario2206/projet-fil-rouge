@@ -7,7 +7,7 @@ use Core\Model\Model;
 class QuestionModel extends Model {
 
     const TABLE_NAME = "questions";
-    const KEYS = ["idPoll","question", "questionOrder"];
+    const KEYS = ["idBet","question", "questionOrder"];
 
     public function __construct()
     {
@@ -20,23 +20,23 @@ class QuestionModel extends Model {
         return $req[0]->response ? true : false;
     }
 
-    public function insert(string $idPoll, string $questionValue, int $questionOrder) {
+    public function insert(string $idBet, string $questionValue, int $questionOrder) {
         return $this->_insert(self::KEYS, func_get_args());
     }
 
     /**
      * For finding question with its answers
      * 
-     * @param $idPoll
+     * @param $idBet
      * @param $questionOrder
      * 
      * @return array
      */
-    public function findQuestionWithAnswers($idPoll, $questionOrder) {
+    public function findQuestionWithAnswers($idBet, $questionOrder) {
 
-        $req = $this->_db->prepare("SELECT * FROM questions INNER JOIN answers ON answers.questionId = questions.idQuestion WHERE questions.idPoll = :idPoll AND questions.questionOrder = :questionOrder");
+        $req = $this->_db->prepare("SELECT * FROM questions INNER JOIN answers ON answers.questionId = questions.idQuestion WHERE questions.idBet = :idBet AND questions.questionOrder = :questionOrder");
 
-        $req->execute(["idPoll" => $idPoll, "questionOrder" => $questionOrder]);
+        $req->execute(["idBet" => $idBet, "questionOrder" => $questionOrder]);
 
         $question = $req->fetchAll();
 

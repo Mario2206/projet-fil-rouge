@@ -19,7 +19,7 @@ function displayResults () {
 
                 <article class="py-1 col6">
 
-                    <h2 class="py-2">
+                    <h2 class="py-2 style--underline">
 
                         ${question}
 

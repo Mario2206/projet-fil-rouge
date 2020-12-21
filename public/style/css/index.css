@@ -517,6 +517,9 @@ a {
 .style--bold {
   font-weight: bold; }
 
+.style--underline {
+  text-decoration: underline; }
+
 .form {
   border: 1px solid #42495B;
   padding-bottom: 4%; }

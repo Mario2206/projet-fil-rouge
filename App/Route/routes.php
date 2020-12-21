@@ -24,6 +24,16 @@ try {
 
     $router->get(BET_LIST . "/:category", "BetListController", "globalBetListFromCategory");
 
+    $router->get(BET_RESPONSE_START . "/:idBet", "BetResponseController", "startPage");
+
+    $router->post(PLAY_POINTS . "/:idBet", "PointsController", "userPayment");
+
+    $router->get(BET_RESPONSE . "/:idBet", "BetResponseController", "pageForAnswers");
+
+    $router->get(BET_RESPONSE . "/:idBet/:currentQuestion", "BetResponseController", "getQuestion");
+
+    $router->post(BET_RESPONSE . "/:idBet/:currentQuestion", "BetResponseController", "recieveAnswer");
+
     $router->get(BET_LIST_PRIVATE, "BetCategoryController", "showPrivateCategories");
 
     $router->get(BET_LIST_PRIVATE . "/:category", "BetListController", "ownBetListFromCategory");
@@ -33,6 +43,8 @@ try {
     $router->get(BET_REPORT_DETAILS . "/:betId", "BetManagerController", "getResultsOfbet");
 
     $router->get(BET_CLOSE . "/:betId", "BetManagerController", "closeBet");
+
+    $router->post(BET_OPEN . "/:betId", "BetManagerController", "openBet");
 
     $router->get(BET_CREATION, "CreateBetController", "createBetPage");
 

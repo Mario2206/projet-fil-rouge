@@ -52,7 +52,7 @@ class CreateBetController extends Controller {
         $betForm->validate();
 
         if($betForm->getErrors()) {
-            $this->redirectWithErrors(BET_CREATION, "Erreur lors de la création du sondage, certains champs ne sont pas correctement complétés" );
+            $this->redirectWithErrors(BET_CREATION, $betForm->getErrors() );
         }
 
         $date = TypeConverter::stringifyDate(new DateTime());
