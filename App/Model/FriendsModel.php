@@ -19,15 +19,28 @@ class FriendsModel extends Model{
         parent::__construct(self::TABLE_NAME);
     }
 
-    public function find (array $filters = [], array $wantedValue = ["*"], array $limit = [], array $order = []) {
-        return $this->_find($filters, $wantedValue, $limit, $order);
-    }
-
+    /**
+     * For getting one friend 
+     * 
+     * @param string $userId 
+     * @param string $friendId
+     * 
+     * @return Stdclass | null
+     */
     public function getOneFriend(string $userId, string $friendId = "") {
         $friends = $this->getFriends($userId, $friendId);
         return $friends ? $friends[0] : null; 
     }
 
+    /**
+     * For getting some friends
+     * 
+     * @param string $userId 
+     * @param string $friendId (optional)
+     * 
+     * @return array
+     * 
+     */
     public function getFriends(string $userId, string $friendId = ""){
 
         $req = $this->_db->prepare('
@@ -40,6 +53,14 @@ class FriendsModel extends Model{
         return $req->fetchAll();
     }
 
+    /**
+     * For checking if two users are already friend
+     * 
+     * @param string $userId 
+     * @param string $friendId
+     * 
+     * @return bool
+     */
     public function alreadyFriend(string $userId, string $friendId){
         
         $friend = $this->_find(["idUser"=>$userId, "idFriend" => $friendId]);
@@ -47,11 +68,26 @@ class FriendsModel extends Model{
         return count($friend) > 0;
     }
 
+    /**
+     * For adding a friend relation
+     * 
+     * @param string $userId 
+     * @param string $friendId 
+     * 
+     * @return int last inserted id
+     */
     public function addFriend(string $userId, string $friendId){
         return $this->_insertMany(["idUser", "idFriend"],[[$userId, $friendId],[$friendId, $userId]]);
-
     }
 
+    /**
+     * For removing a friend relation 
+     * 
+     * @param string $userId 
+     * @param string $friendId 
+     * 
+     * @return array
+     */
     public function deleteFriend(string $userId, string $friendId){
 
         return [

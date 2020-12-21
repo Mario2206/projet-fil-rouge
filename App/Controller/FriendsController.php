@@ -22,6 +22,9 @@ class FriendsController extends Controller{
         $this->user = Session::get("user");
     }
 
+    /**
+     * (GET) Friends page
+     */
     public function friendsPage(){
 
         $idUser = $this->user->idUser;
@@ -31,6 +34,9 @@ class FriendsController extends Controller{
 
     }
 
+    /**
+     * (POST) Add friend
+     */
     public function addFriend(){
 
         if(!isset($_POST["username"]) || !$_POST["username"]) {
@@ -54,6 +60,9 @@ class FriendsController extends Controller{
 
     }
 
+    /**
+     * (GET) Remove friend
+     */
     public function removeFriend($friendId){
 
         $idUser = $this->user->idUser;

@@ -20,6 +20,7 @@ const CHAT_MESS = "/message";
 const BET_RESPONSE = "/bet/response";
 const BET_RESPONSE_START = "/bet/response/start";
 CONST PLAY_POINTS = "/points";
+const BET_RESULTS = "/result";
 
 // BET ROUTES
 const BET_LIST = "/bet";

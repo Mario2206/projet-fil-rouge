@@ -11,11 +11,11 @@ function disponibilityBtn ($idPoll, $currentDate, $availableAt, $unAvailableAt) 
 
     if($currentTime > $availableTime && $currentTime < $unAvailableTime) :
                             
-        echo "<a href='" . MAIN_PATH . BET_CLOSE . "/" .$idPoll . "' class='cta--danger'>Clôturer</a>";
+        echo "<button type='submit' for='form-result' class='cta--danger'>Terminer le pari</button>";
 
     else :
 
-        echo '   <button class="cta--success action-modal" data-toggle="modal" data-target="#exampleModalCenter">Rendre disponible</button>';
+        echo '   <button type="button" class="cta--success action-modal" data-toggle="modal" data-target="#exampleModalCenter">Rendre disponible</button>';
     
     endif;
 }

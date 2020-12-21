@@ -90,9 +90,9 @@ class BetModel extends Model {
             $bet = $this->_find(["idBet" => $betId]);
 
             $req = $this->_db->prepare("
-            SELECT questions.question, questions.idQuestion, answers.answer, COUNT(`user-answers`.idAnswer) AS nVoter FROM questions 
+            SELECT questions.question, questions.idQuestion, answers.answer, answers.answerId, COUNT(`user_answers`.idAnswer) AS nVoter FROM questions 
             INNER JOIN answers ON questions.idQuestion = answers.questionId 
-            LEFT JOIN `user-answers` ON `user-answers`.idAnswer = answers.answerId
+            LEFT JOIN `user_answers` ON `user_answers`.idAnswer = answers.answerId
             WHERE idBet = :id_bet 
             GROUP BY answers.answerId
             ");
@@ -100,7 +100,7 @@ class BetModel extends Model {
             $req->execute(["id_bet"=>$betId]);
             $questions = $req->fetchAll();
             
-            $formatedQuestions = ArrayMapper::groupByPropertyOfSubObject("question", ["answer", "idQuestion" , "nVoter"], $questions);
+            $formatedQuestions = ArrayMapper::groupByPropertyOfSubObject("question", ["answer", "idQuestion" , "nVoter", "answerId"], $questions);
 
             return [
                 "bet" => $bet[0], 

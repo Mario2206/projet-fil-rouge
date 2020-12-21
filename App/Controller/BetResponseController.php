@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\BetModel;
+use App\Model\BetParticipationModel;
 use App\Model\QuestionModel;
 use App\Model\UserAnswersModel;
 use Core\Controller\Controller;
@@ -14,14 +15,16 @@ class BetResponseController extends Controller {
     private $user;
 
     private $betModel;
+    private $betParticipationModel;
     private $userAnswerModel;
     private $questionModel;
 
     public function __construct()
     {
         $this->betModel = new BetModel();
-        $this->userAnswerModel = new  UserAnswersModel();
+        $this->betParticipationModel = new  BetParticipationModel();
         $this->questionModel = new QuestionModel();
+        $this->userAnswerModel = new UserAnswersModel();
 
         $this->protectPageFor("user", LOGIN);
 
@@ -36,9 +39,9 @@ class BetResponseController extends Controller {
      */
     public function startPage(string $betId) {
 
-        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, 0, $this->user->idUser);
+        $participation = $this->betParticipationModel->findParticipation($this->user->idUser , $betId );
 
-        if($answerAlreadyExist) {
+        if($participation) {
             
             $this->redirectWithErrors(BET_LIST, "L'utilisateur a déjà participé au pari");
         }
@@ -76,9 +79,9 @@ class BetResponseController extends Controller {
      */
     public function getQuestion($betId, $questionOrder) {
         
-        $answerAlreadyExist = $this->userAnswerModel->alreadyAnswered( $betId, $questionOrder - 1, $this->user->idUser);
+        $participation = $this->userAnswerModel->alreadyAnswered($betId, $questionOrder - 1 ,$this->user->idUser  );
 
-        if($answerAlreadyExist) {
+        if($participation) {
             
             $this->renderJson("L'utilisateur a déjà participé à ce pari", HTTP_BAD_REQ);
         }

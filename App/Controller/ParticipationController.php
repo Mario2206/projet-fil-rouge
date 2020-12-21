@@ -2,23 +2,24 @@
 
 namespace App\Controller;
 
+use App\Model\BetParticipationModel;
 use App\Model\UserModel;
 use App\Model\UserPaymentModel;
 use Core\Controller\Controller;
 use Core\Tools\Session;
 use Exception;
 
-class PointsController extends Controller {
+class ParticipationController extends Controller {
 
     private $user;
     private $userModel;
-    private $userPaymentModel;
+    private $participationModel;
 
     public function __construct()
     {
         $this->user = Session::get("user");
         $this->userModel = new UserModel();
-        $this->userPaymentModel = new UserPaymentModel();
+        $this->participationModel = new BetParticipationModel();
     }
     
     /**
@@ -42,7 +43,7 @@ class PointsController extends Controller {
         
         $this->userModel->updateUserPoints($currentPoints - $payment, $this->user->idUser);
 
-        $this->userPaymentModel->save($this->user->idUser, $betId, $payment);
+        $this->participationModel->setParticipation($this->user->idUser, $betId, $payment);
 
         $updatedUser = $this->userModel->findOne(["idUser" => $this->user->idUser]);
 

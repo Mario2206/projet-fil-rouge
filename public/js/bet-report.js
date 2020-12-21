@@ -12,12 +12,12 @@ function displayResults () {
     .done((res)=> {
 
         let resultsHtml = []
-
+        console.log(res);
         for(const question in res.questions ) {
             
             resultsHtml.push(`
 
-                <article class="py-1 col6">
+                <div class="py-1 col6">
 
                     <h2 class="py-2 style--underline">
 
@@ -27,49 +27,48 @@ function displayResults () {
 
                     <ul class="flex--column align--center col12">
 
-                    ${res.questions[question].map(answer=> (`
+                    ${res.questions[question].map((answer, index)=> (`
                     
-                        <li class="flex--column col12 my-2 p-1 border--black">
+                        <li class="col12 my-2 flex align--center ">
+                            <label for="${answer.answerId}" class="flex--column flex-fill  p-1 border--black">
+                                <p>
 
-                            <p>
+                                ${answer.answer}
 
-                            ${answer.answer}
+                                </p>
 
-                            </p>
+                                <strong class="self--end py-2">
 
-                            <strong class="self--end py-2">
+                                    Nombre de votants : ${answer.nVoter}
 
-                                Nombre de votants : ${answer.nVoter}
-
-                            </strong>
-
+                                </strong>
+                            </label>
+                            <input type="radio" name="response[${answer.idQuestion}]" value="${answer.answerId}" id="${answer.answerId}"/>
                         </li>
                 
                     `)).join("")}
                     
                     </ul>
 
-                </article>
+                </div>
             
             `)
 
         }
-
-        
-
 
         $("#container-results").html(resultsHtml.join(""))
 
 
 
     })
-    .fail(()=> {
+    .fail((err)=> {
+        console.log(err);
         alert("Une erreur s'est produite lors de la récupération des données")
     })
 
 }
 
 //SIMULATE  SOCKET FOR GETTING RESULTS 
-setInterval(displayResults, 5000)
+setInterval(displayResults, 50000)
 
 displayResults()

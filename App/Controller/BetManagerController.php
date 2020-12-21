@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Form\OpenBetForm;
+use App\Model\AnswerModel;
 use App\Model\BetModel;
+use App\Model\UserAnswersModel;
 use Core\Controller\Controller;
 use Core\Model\Converters\TypeConverter;
 use Core\Tools\Session;
@@ -12,6 +14,8 @@ use DateTime;
 class BetManagerController extends Controller {
 
     private $betModel;
+    private $userAnswerModel;
+    private $answerModel;
     private $user;
 
     public function __construct()
@@ -19,6 +23,8 @@ class BetManagerController extends Controller {
         $this->user = Session::get("user");
         $this->protectPageFor("user", LOGIN);
         $this->betModel = new BetModel();
+        $this->userAnswerModel = new UserAnswersModel();
+        $this->answerModel = new AnswerModel();
         
     }
 
@@ -60,15 +66,22 @@ class BetManagerController extends Controller {
     }
 
     /**
-     * (GET) Close bet
+     * (GET) Close bet and distributing points to winners 
      * 
      * @param string $betId
      */
     public function closeBet(string $betId) {
-
-        $this->protectAgainstCheat($betId);
         
+        $this->protectAgainstCheat($betId);
+
+        if(!isset($_POST["response"])) {
+            $this->redirectWithErrors(BET_REPORT . "/" . $betId,'Erreur lors de la fermeture du pari');
+        }
+        
+        $this->answerModel->setCorrectForSomeAnswers($_POST["response"]);
+
         $closeDate = TypeConverter::stringifyDate(new DateTime());
+    
         $res = $this->betModel->update(["unAvailableAt" => $closeDate], $betId, $this->user->idUser);
 
         if($res) {

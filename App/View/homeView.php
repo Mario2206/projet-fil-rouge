@@ -12,10 +12,7 @@
             <span class="top-bar--logo">
                 CLAIRVOYANCE
             </span>
-            <button class="burger-btn">
-                <span></span>
-            </button>
-            <nav class="top-bar--nav"></nav>
+            
         </div>
         <section class="flex-fill flex align--center justify--center bg--blue">
             <h1 class="f-white">

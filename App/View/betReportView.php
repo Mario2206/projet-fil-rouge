@@ -48,19 +48,20 @@ ob_start();
     </header>
 
     <!-- CONTAINER RESULTS -->
-    <div class="flex--column align--center" id="container-results">
-         <input type="hidden" value="<?= $bet->idBet ?>" id="bet-id"/>
-    </div>
-
-
-    <footer class="flex justify--center">
+    <form action="<?= MAIN_PATH . BET_CLOSE . "/" . $bet->idBet ?>" method="POST"  id="form-result">
+        <div class="flex--column align--center" id="container-results">
+            <input type="hidden" value="<?= $bet->idBet ?>" id="bet-id"/>
+        </div>
+        <div class="flex justify--center">
+            <?php
+                require_once(ROOT . "\App\View\inc\disponibilityBtn.php");
+                disponibilityBtn($bet->idBet, $currentDate, $bet->availableAt , $bet->unAvailableAt);
+            ?>  
+        </div>
        
-        <?php
-            require_once(ROOT . "\App\View\inc\disponibilityBtn.php");
-            disponibilityBtn($bet->idBet, $currentDate, $bet->availableAt , $bet->unAvailableAt);
-        ?>
 
-    </footer>
+    </form>
+
 </section>
 
 <?php

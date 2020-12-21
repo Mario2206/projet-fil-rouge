@@ -26,13 +26,17 @@ try {
 
     $router->get(BET_RESPONSE_START . "/:idBet", "BetResponseController", "startPage");
 
-    $router->post(PLAY_POINTS . "/:idBet", "PointsController", "userPayment");
+    $router->post(PLAY_POINTS . "/:idBet", "ParticipationController", "userPayment");
 
     $router->get(BET_RESPONSE . "/:idBet", "BetResponseController", "pageForAnswers");
 
     $router->get(BET_RESPONSE . "/:idBet/:currentQuestion", "BetResponseController", "getQuestion");
 
     $router->post(BET_RESPONSE . "/:idBet/:currentQuestion", "BetResponseController", "recieveAnswer");
+
+    $router->get(BET_RESULTS, "BetResultController", "getResults");
+
+    $router->get(BET_RESULTS . "/:idParticipation", "BetResultController", "getResult");
 
     $router->get(BET_LIST_PRIVATE, "BetCategoryController", "showPrivateCategories");
 
@@ -42,7 +46,7 @@ try {
 
     $router->get(BET_REPORT_DETAILS . "/:betId", "BetManagerController", "getResultsOfbet");
 
-    $router->get(BET_CLOSE . "/:betId", "BetManagerController", "closeBet");
+    $router->post(BET_CLOSE . "/:betId", "BetManagerController", "closeBet");
 
     $router->post(BET_OPEN . "/:betId", "BetManagerController", "openBet");
 

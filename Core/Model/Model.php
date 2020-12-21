@@ -138,7 +138,7 @@ abstract class Model {
      * @param array $data
      * @param array $filters
      * 
-     * return int (number of updated rows)
+     * @return int (number of updated rows)
      */
     protected function _update (array $data, array $filters) : int {
 
@@ -150,7 +150,8 @@ abstract class Model {
         if($filters) {
             $query .= " " . QueryBuilder::filters($filterKey);
         }
-    
+
+
         $preparedArray = array_merge(array_values($data), array_values( $filters ));
         $req = $this->_db->prepare($query);
         $req->execute($preparedArray);

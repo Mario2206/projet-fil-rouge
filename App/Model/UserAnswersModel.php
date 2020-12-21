@@ -7,7 +7,7 @@ use Core\Model\Model;
 class UserAnswersModel extends Model {
 
 
-    const TABLE_NAME = "user-answers";
+    const TABLE_NAME = "user_answers";
 
 
     public function __construct()
@@ -43,5 +43,19 @@ class UserAnswersModel extends Model {
      */
     public function saveUserAnswer($answerId, $userId, $questionId) {
        return  $this->_insert(["idAnswer", "idUser", "idQuestion"], [$answerId, $userId, $questionId]);
+    }
+
+    public function getUserAnswerFromSpecificBet(string $idBet, string $userId) {
+        $tableName = self::TABLE_NAME;
+
+        $query = "
+            SELECT * FROM $tableName
+            INNER JOIN questions ON questions.idQuestion = $tableName.idQuestion
+            INNER JOIN answers ON answers.answerId = $tableName.idAnswer
+            WHERE $tableName.idUser = ? AND questions.idBet = ?
+        ";
+        $req = $this->_db->prepare($query);
+        $req->execute([$userId, $idBet]);
+        return $req->fetchAll();
     }
 }

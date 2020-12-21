@@ -1,4 +1,4 @@
-# Projet Sondage (POO / SQL / AJAX)
+# Projet Fil Rouge (POO / SQL / AJAX)
 
 ## Configuration pour démarrer le projet
 
@@ -9,7 +9,7 @@
 * Aller dans le dossier Configuration\db
 * Créer un fichier dbConfiguration.php
 * Copier-Coller le contenu présent dans dbConfiguration.example.php dans le fichier dbConfiguration.php que vous venez de créer
-* Remplacer les informations de connexion à la base de données par les vôtres 
+* Remplacer les informations de connexion à la base de données 
 
 ### Pour le système de routage
 
@@ -20,7 +20,7 @@
 
 
 Par exemple, si le serveur pointe sur un dossier "/www/" et que le projet se trouve à l'intèrieur de ce même dossier "/www/", on a donc :
-$projectDir = "/www/myproject/public"
+$projectDir = "/myproject/public"
 
 **ATTENTION A NE PAS METTRE DE "/" après "public"**
 
@@ -28,6 +28,6 @@ $projectDir = "/www/myproject/public"
 
 En important la base de données, vous pourrez trouver des utilisateurs déjà crées. Leurs mots de passe sont tous "password2206"
 
-### Participants
+### Développeur
 
-Vauthier Alexandre, Abir Mahrzi, Raimbault Mathieu 
+Raimbault Mathieu 
